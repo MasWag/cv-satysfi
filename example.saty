@@ -1,0 +1,129 @@
+% -*- coding: utf-8 -*-
+@import: cv
+@require: itemize
+@require: table
+@require: annot
+
+document (|
+  name = `John Smith`;
+  |) '<
+  +twocolumn ?:(0.5) <
+  +tabbedblock ?:(60pt)[
+    ({Address}, '<
+    +p-noindent{123 Broadway,}
+    +p-noindent{City, 12345}>);
+    ({Date of Birth}, '<
+    +p-noindent{${7^{th}} September 1979}>);
+    ({Nationality}, '<
+    +p-noindent{British}>);
+  ];
+  > <
+  +tabbedblock ?:(60pt) [
+    ({Home Phone}, '<
+    +p-noindent{+0 (000) 111 1111}>);
+    ({Mobile Phone}, '<
+    +p-noindent{+0 (000) 111 1112}>);
+    ({Email}, '<
+    +p-noindent{\href(`mailto:john@smith.com`){john\@smith.com}}>);
+    ];
+  >
+  +section{Personal Profile}<
+    +p-noindent {
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis elementum nec dolor sed sagittis. Cras justo lorem, volutpat mattis lacus vel, consequat aliquam quam. Interdum et malesuada fames ac ante ipsum primis in faucibus. Integer blandit, massa at tincidunt ornare, dolor magna interdum felis, ac blandit urna neque in turpis.
+    }
+  >
+
+  +section{Education} <
+    +tabbedblock [
+      ({2009-2012}, '<+p-noindent {
+        BSc Hons in Computer Science - University of Warwick, England
+      } +p-noindent {
+        First Class -80\% Average
+      } +p-noindent {
+        \emph{Third Year Project - 89\% awarded 'Project of the Year 2004'}
+      }
+      >);
+      ({2007-2009}, '<
+        +p-noindent{
+          Advanced Secondary Education - Corfe Hills School, Broadstone, Dorset, England
+        }
+        +p-noindent {
+        \tabular(fun t -> (
+        let (c, l, r) = (t#c, t#l, t#r) in
+          [
+           [l {\emph{Pure Mathematics}}; l {A};];
+           [l {\emph{Statics (AS)}}; l {A};];
+           [l {\emph{Physics}}; l {A};];
+           [l {\emph{Economics}}; l {B};];
+          ] ))(fun xs ys -> ([]));
+      }>);
+    ];
+   >
+
+  +section{Employment History} <
+    +tabbedblock ?:(45pt) [
+      ({Sep 2013 - Present}, '<+p-noindent {
+        Twitter, 1355 Market St, San Francisco, CA, United States
+      } +p-noindent {
+        \emph{Senior Developer / Technical Team Lead}
+      } +p-noindent {
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis elementum nec dolor sed sagittis. Cras justo lorem, volutpat mattis lacus vel, consequat aliquam quam. Interdum et malesuada fames ac ante ipsum primis in faucibus.} +p-noindent {
+        \bold{Technologies:} Ruby on Rails 2.3, Amazon EC2, NoSQL data stores, memcached, collaborative matching, Facebook Graph API.}>);
+        ({Oct 2012 - Sep 2014}, '<+p-noindent {
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis elementum nec dolor:
+        \listing-with-gap (0pt) {
+          * Designing and developing an enterprise ASP.NET application for generic reporting, with a transactional COM+ serviced component middle-tier, and secure data access layer.
+          * Working with the finance department to produce useful reports from complex data models.
+        }
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis elementum nec dolor sed sagittis.
+      }>);
+    ];
+   >
+
+   +section{Software Engineering Skills} <
+   +skill-groups [
+   SkillGroup({Programming Languages}, [
+              {\emph{Ruby} - MRI 1.8.7, 1.9.2};
+              {\emph{ASP.NET, C\#, VB.NET}};
+              {\emph{PHP}};
+              {\emph{Java/Scala}}]);
+   SkillGroup({Web Development}, [
+              {\emph{HTML5, CSS3/SASS, JavaScript/CoffeeScript/jQuery}};
+              {\emph{Ruby on Rails v3.1}};
+              {\emph{Test:Unit, RSpec, Cucumber, Selenium} - automated testing frameworks};
+              {\emph{Apache/Nginx Web Servers}}]);
+   SkillGroup({Miscellaneous}, [
+              {\emph{Microsoft SQL Server 2000/2005} - database architecture and administration};
+              {\emph{Transact-SQL} - data definition and manipulation};
+              {\emph{SQL Profiler} - performance tuning and debugging};
+              {\emph{MySQL Server}};
+              {\emph{CVS, DARCS, git} - source version control}])
+   ];
+   >
+   
+   +section{Interests} <
+   +listing-with-gap (0pt) {
+   * \bold{Badminton, Tennis, Running, Cycling, Sailing}
+   * \bold{Travelling}
+   * \bold{Creative Writing}
+   * \bold{Photography}
+   * \bold{Car Mechanics}
+   }
+   >
+   +section{Referees} <
+    +twocolumn ?:(0.5) <
+      +tabbedblock ?:(60pt)[
+        ({Name}, '<+p-noindent{Bill Lumbergh}>);
+        ({Company}, '<+p-noindent{Initech Inc.}>);
+        ({Position}, '<+p-noindent{Vice President}>);
+        ({Contact}, '<+p-noindent{bill\@initech.com}>);
+  ];
+  > < +tabbedblock ?:(60pt) [
+        ({Name}, '<+p-noindent{Michael "Big Mike" Tucker}>);
+        ({Company}, '<+p-noindent{Burbank Buy More}>);
+        ({Position}, '<+p-noindent{Store Manager}>);
+        ({Contact}, '<+p-noindent{mike\@buymore.com}>);
+    ];
+   > 
+   >
+ >

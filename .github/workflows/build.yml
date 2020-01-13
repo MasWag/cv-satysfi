@@ -1,0 +1,33 @@
+name: build
+on: push
+
+jobs:
+  publish:
+    name: Publish pdf
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        version: [0.0.4]
+    container:
+      image: amutake/satysfi:latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Install saxon
+        run: apt install libsaxon-java -y
+      - name: Install font
+        run: |
+          export HOME=/root
+          eval $(opam env)
+          opam update
+          opam install satysfi-fonts-asana-math
+          satyrographos install
+      - name: Build with SATySFi
+        run: |
+          export HOME=/root
+          eval $(opam env)
+          satysfi example.saty
+      - name: Upload artifact
+        uses: actions/upload-artifact@master
+        with:
+          name: example
+          path: example.pdf
