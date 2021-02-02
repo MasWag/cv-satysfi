@@ -12,8 +12,6 @@ jobs:
       image: amutake/satysfi:latest
     steps:
       - uses: actions/checkout@v1
-      - name: Install saxon
-        run: apt install libsaxon-java -y
       - name: Install font
         run: |
           export HOME=/root
