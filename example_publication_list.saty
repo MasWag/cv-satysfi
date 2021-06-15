@@ -1,0 +1,13 @@
+% -*- coding: utf-8 -*-
+@import: publication_list
+@require: itemize
+@require: table
+@require: annot
+@import: bib
+
+document (|
+  title = `Publication List`;
+  name = `Maski Waga`;
+  |) '<
+  +publications(bibliography);
+>

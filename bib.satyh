@@ -1,0 +1,123 @@
+% -*- coding: utf-8 -*-
+@import: publication_list
+  let bibliography = [
+    
+  (UnderReview(|
+    author = {|Masaki Waga, Étienne André, Ichiro Hasuo|};
+    title = {Model-Bounded Monitoring of Hybrid Systems.};
+    year = 2020;
+  |));
+
+  (ToAppear(|
+    author = {|Elena Gutiérrez, Takamasa Okudono, Masaki Waga, Ichiro Hasuo|};
+    title = {Genetic Algorithm for the Weight Maximization Problem on Weighted Automata.};
+    booktitle = {GECCO};
+    year = 2020;
+  |));
+
+  (ToAppear(|
+    author = {|Takamasa Okudono, Masaki Waga, Taro Sekiyama, Ichiro Hasuo|};
+    title = {Weighted Automata Extraction from Recurrent Neural Networks via Regression on State Spaces.};
+    booktitle = {AAAI};
+    year = 2020;
+  |));
+
+  (InProceedings(|
+    author = {|Masaki Waga|};
+    title = {Falsification of cyber-physical systems with robustness-guided black-box checking.};
+    booktitle = {HSCC};
+    series = None; 
+    volume = None; 
+    number = None; 
+    pages = (`11:1`, `11:13`);
+    year = 2020;
+  |));
+
+  (InProceedings(|
+    author = {|Masaki Waga|};
+    title = {Online Quantitative Timed Pattern Matching with Semiring-Valued Weighted Automata.};
+    booktitle = {FORMATS};
+    series = None; 
+    volume = None; 
+    number = None; 
+    pages = (`3`, `22`);
+    year = 2019;
+  |));
+
+  (InProceedings(|
+    author = {|Masaki Waga, Étienne André, Ichiro Hasuo|};
+    title = {Symbolic Monitoring Against Specifications Parametric in Time and Data.};
+    booktitle = {CAV (1)};
+    series = None; 
+    volume = None; 
+    number = None; 
+    pages = (`520`, `539`);
+    year = 2019;
+  |));
+
+  (InProceedings(|
+    author = {|Masaki Waga, Étienne André|};
+    title = {Online Parametric Timed Pattern Matching with Automata-Based Skipping.};
+    booktitle = {NFM};
+    series = None; 
+    volume = None; 
+    number = None; 
+    pages = (`371`, `389`);
+    year = 2019;
+  |));
+
+  (Article(|
+    author = {|Masaki Waga, Ichiro Hasuo|};
+    title = {Moore-Machine Filtering for Timed and Untimed Pattern Matching.};
+    journal = {IEEE Trans. on CAD of Integrated Circuits and Systems};
+    volume = Some(37);
+    number = Some({11});
+    pages = (`2649`, `2660`);
+    year = 2018;
+  |));
+
+  (InProceedings(|
+    author = {|Masaki Waga, Ichiro Hasuo, Kohei Suenaga|};
+    title = {MONAA: A Tool for Timed Pattern Matching with Automata-Based Acceleration.};
+    booktitle = {MT\@CPSWeek};
+    series = None; 
+    volume = None; 
+    number = None; 
+    pages = (`14`, `15`);
+    year = 2018;
+  |));
+
+  (InProceedings(|
+    author = {|Étienne André, Ichiro Hasuo, Masaki Waga|};
+    title = {Offline Timed Pattern Matching under Uncertainty.};
+    booktitle = {ICECCS};
+    series = None; 
+    volume = None; 
+    number = None; 
+    pages = (`10`, `20`);
+    year = 2018;
+  |));
+
+  (InProceedings(|
+    author = {|Masaki Waga, Ichiro Hasuo, Kohei Suenaga|};
+    title = {Efficient Online Timed Pattern Matching by Automata-Based Skipping.};
+    booktitle = {FORMATS};
+    series = None; 
+    volume = None; 
+    number = None; 
+    pages = (`224`, `243`);
+    year = 2017;
+  |));
+
+  (InProceedings(|
+    author = {|Masaki Waga, Takumi Akazaki, Ichiro Hasuo|};
+    title = {A Boyer-Moore Type Algorithm for Timed Pattern Matching.};
+    booktitle = {FORMATS};
+    series = None; 
+    volume = None; 
+    number = None; 
+    pages = (`121`, `139`);
+    year = 2016;
+  |));
+
+  ]
