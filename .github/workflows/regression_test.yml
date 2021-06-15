@@ -3,11 +3,11 @@ on: [push, pull_request]
 
 jobs:
   regression-test:
-  name: Run regression test
-  runs-on: ubuntu-latest
-  container:
-    image: zeptometer/satysfi-yarn-diff-pdf:latest
-  steps:
+    name: Run regression test
+    runs-on: ubuntu-latest
+    container:
+      image: zeptometer/satysfi-yarn-diff-pdf:latest
+    steps:
     - uses: actions/checkout@v1
     - name: Install Yarn dependencies
       run: yarn install
