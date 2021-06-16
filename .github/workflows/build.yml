@@ -23,9 +23,9 @@ jobs:
         run: |
           export HOME=/root
           eval $(opam env)
-          satysfi example.saty
+          satysfi ./examples/example.saty
       - name: Upload artifact
         uses: actions/upload-artifact@master
         with:
           name: example
-          path: example.pdf
+          path: ./examples/example.pdf

@@ -1,8 +1,9 @@
 % -*- coding: utf-8 -*-
-@import: cv
 @require: itemize
 @require: table
 @require: annot
+
+@import: ../src/cv
 
 document (|
   name = `John Smith`;
