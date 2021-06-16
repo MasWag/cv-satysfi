@@ -52,34 +52,7 @@ type bib-item =
   | UnderReview   of bib-under-review
   | ToAppear      of bib-to-appear
 
-type skill-group =
-  | SkillGroup of inline-text * inline-text list
-
-let string-to-int str =
-    let-rec string-to-list-args str ls =
-      match string-length str with
-      | 0 -> ls
-      | 1 -> (string-sub str 0 1) :: ls
-      | len -> string-to-list-args (string-sub str 1 (len - 1)) ((string-sub str 0 1) :: ls)
-    in
-    let string-to-list str = string-to-list-args str [] in
-    let consume-one c i =
-    match c with
-      | `0` -> i * 10 
-      | `1` -> i * 10 + 1
-      | `2` -> i * 10 + 2
-      | `3` -> i * 10 + 3
-      | `4` -> i * 10 + 4
-      | `5` -> i * 10 + 5
-      | `6` -> i * 10 + 6
-      | `7` -> i * 10 + 7
-      | `8` -> i * 10 + 8
-      | `9` -> i * 10 + 9
-      | _   -> i
-    in
-    List.fold-right consume-one 0 (string-to-list str)
-
-module CV : sig
+module PublicationList : sig
 
   val document : 'a -> block-text -> document
     constraint 'a :: (|
@@ -87,45 +60,9 @@ module CV : sig
       name: string;
     |)
 
-  val font-latin-roman  : string * float * float
-  val font-latin-italic : string * float * float
-  val font-latin-bold   : string * float * float
-  val font-latin-mono   : string * float * float
-  val font-cjk-mincho   : string * float * float
-  val font-cjk-gothic   : string * float * float
-  val set-latin-font : (string * float * float) -> context -> context
-  val set-cjk-font   : (string * float * float) -> context -> context
-  val get-latin-font-size : context -> length
-  val get-cjk-font-size : context -> length
-  direct \index : [string; inline-text?; inline-text] inline-cmd
-  direct \cite : [string list] inline-cmd
-  direct +p-noindent : [inline-text] block-cmd
-  direct +p : [inline-text] block-cmd
-
-  direct +section : [inline-text; block-text] block-cmd
-  direct +subsection : [string?; inline-text; block-text] block-cmd
-  direct \emph : [inline-text] inline-cmd
-  direct \bold : [inline-text] inline-cmd
-  direct \dfn : [inline-text] inline-cmd
-  direct \roman : [inline-text] inline-cmd
-  direct \footnote : [inline-text] inline-cmd
-  direct +tabbedblock : [length?; (inline-text * block-text) list] block-cmd
-  direct +description : [(inline-text * inline-text) list] block-cmd
-  direct +twocolumn : [float?; block-text; block-text] block-cmd
   direct +publications : [bib-item list] block-cmd
 
-  direct +listing-with-gap : [bool?; length; itemize] block-cmd
-  direct \listing-with-gap : [bool?; length; itemize] inline-cmd
-  direct +enumerate-with-gap : [length; itemize] block-cmd
-  direct \enumerate-with-gap : [length; itemize] inline-cmd
-  direct \promote-linebreak : [] inline-cmd
-
-  direct +skill-groups : [skill-group list] block-cmd
 end = struct
-
-  let-inline ctx \promote-linebreak =
-    discretionary (0-100000) inline-nil inline-nil inline-nil
-
   let slateblue = Color.rgb 0.17 0.22 0.34
 
   let generate-fresh-label =
@@ -134,21 +71,6 @@ end = struct
         let () = count <- !count + 1 in
           `generated:` ^ (arabic (!count))
       ))
-
-  let-mutable index-list <- []
-
-
-  let-inline ctx \index s ?:itopt it =
-    let it-index =
-      match itopt with
-      | None           -> it
-      | Some(it-index) -> it-index
-    in
-      hook-page-break (fun pginfo _ -> (
-        let pageno = pginfo#page-number in
-        index-list <- (s, it-index, pageno) :: !index-list
-      )) ++ read-inline ctx it
-
 
   let font-size-normal  = 12pt
   let font-size-title   = 32pt
@@ -323,22 +245,6 @@ end = struct
   let make-pages (p1, p2) =
     embed-string ((arabic p1) ^ `–` ^ (arabic p2))
 
-
-  let-inline ctx \cite labels =
-    let sacc =
-      labels |> List.fold-left-adjacent (fun sacc label _ opt -> (
-        let s-num =
-          match get-cross-reference (`bib:` ^ label) with
-          | None    -> `?`
-          | Some(s) -> s
-        in
-          match opt with
-          | None    -> sacc ^ s-num
-          | Some(_) -> sacc ^ s-num ^ `, `#
-      )) ` `
-    in
-      read-inline ctx (embed-string (`[` ^ sacc ^ `]`))
-
   let paper-width = 182mm
   let paper-height = 257mm
   let top-margin = 20mm
@@ -480,186 +386,7 @@ end = struct
     let ib-inner = read-inline ctx inner ++ inline-fil in
       form-paragraph ctx ib-inner
 
-  let-block ctx +p inner =
-    let len = get-font-size ctx *' font-ratio-cjk in
-    let ib-inner = inline-skip len ++ read-inline ctx inner ++ inline-fil in
-      form-paragraph ctx ib-inner
-
-  let-block ctx +section title inner =
-      section-scheme ctx title inner
-
-
-  let-block ctx +subsection ?:labelopt title inner =
-    let label =
-      match labelopt with
-      | None        -> generate-fresh-label ()
-      | Some(label) -> label
-    in
-      subsection-scheme ctx label title inner
-
-
-  let-inline ctx \emph inner =
-    let ctx-emph =
-      ctx |> set-font Latin font-latin-italic
-          |> set-cjk-font font-cjk-gothic
-    in
-      read-inline ctx-emph inner
-
-  let-inline \dfn inner = {\emph{#inner;}}
-
-  let-inline ctx \bold inner =
-    let ctx-bold =
-      ctx |> set-font Latin font-latin-bold
-          |> set-cjk-font font-cjk-gothic
-    in
-      read-inline ctx-bold inner
-      
-  let make-label prefix labelopt =
-    match labelopt with
-    | None    -> generate-fresh-label ()
-    | Some(s) -> prefix ^ s
-
-  let generate-footnote-label n =
-    `footnote:` ^ (arabic n)
-
-
-  let promote-another-trial () =
-    register-cross-reference `changed` `T`
-
   let (+++>) = List.fold-left (+++)
-
-  let (+++>) = List.fold-left (+++)
-  let concat-blocks = (+++>) block-nil
-
-
-  let item-indent = 16pt
-  let item-gap = 10pt
-
-
-  let bullet color (x, y) =
-    let cx = x +' 4pt in
-    let cy = y +' 4pt in
-    let r = 2pt in
-      [ fill color (Gr.circle (cx, cy) r); ]
-
-
-  let-rec listing-item : context -> int -> itemize -> block-boxes
-    | ctx depth (Item(parent, children)) =
-        let color = get-text-color ctx in
-        let ib-bullet = inline-graphics 8pt 8pt 0pt (bullet color) ++ inline-skip 8pt in
-        let bullet-width = get-natural-width ib-bullet in
-        let parent-indent = item-indent *' (float depth) in
-        let ib-parent =
-          embed-block-top ctx ((get-text-width ctx) -' parent-indent -' bullet-width) (fun ctx ->
-            form-paragraph (ctx |> set-paragraph-margin item-gap item-gap)
-              (read-inline ctx parent ++ inline-fil)
-          )
-        in
-        let bb-parent =
-          form-paragraph (ctx |> set-paragraph-margin item-gap item-gap)
-            ((inline-skip parent-indent) ++ ib-bullet ++ ib-parent)
-        in
-        let bblst-children = List.map (listing-item ctx (depth + 1)) children in
-        bb-parent +++> bblst-children
-
-
-  let-rec listing-item-breakable
-    | ctx depth (Item(parent, children)) =
-        let color = get-text-color ctx in
-        let ib-bullet = inline-graphics 8pt 8pt 0pt (bullet color) ++ inline-skip 8pt in
-        let bullet-width = get-natural-width ib-bullet in
-        let parent-indent = item-indent *' (float depth) in
-        let pads = (parent-indent +' bullet-width, 0pt, 0pt, 0pt) in
-        let decos =
-          let deco _ _ _ _ = [] in
-          (deco, deco, deco, deco)
-        in
-        let bb-parent =
-          block-frame-breakable (ctx |> set-paragraph-margin item-gap item-gap) pads decos (fun ctx ->
-            form-paragraph ctx
-              (inline-skip (0pt -' bullet-width) ++ ib-bullet ++ read-inline ctx parent ++ inline-fil)
-          )
-        in
-        let bblst-children = List.map (listing-item-breakable ctx (depth + 1)) children in
-        bb-parent +++> bblst-children
-
-
-  let listing break ctx outer-gap (Item(_, itmzlst)) =
-    if break then
-      let bblst = List.map (listing-item-breakable ctx 0) itmzlst in
-      block-skip outer-gap +++ concat-blocks bblst +++ block-skip outer-gap
-    else
-      let bblst = List.map (listing-item ctx 0) itmzlst in
-      block-skip outer-gap +++ concat-blocks bblst +++ block-skip outer-gap
-
-
-  let-block ctx +listing-with-gap ?:breakopt outer-gap item =
-    let break = Option.from false breakopt in
-    listing break ctx outer-gap item
-
-
-  let-inline ctx \listing-with-gap ?:breakopt outer-gap item =
-    let break = Option.from false breakopt in
-      inline-fil ++ embed-block-breakable ctx (listing break ctx outer-gap item)
-        ++ omit-skip-after
-
-  let skill-group ctx (SkillGroup(title, body)) = 
-    let color = get-text-color ctx in
-    let ib-bullet = inline-graphics 8pt 8pt 0pt (bullet color) ++ inline-skip 8pt in
-    let bullet-width = get-natural-width ib-bullet in
-    let pads = (bullet-width, 0pt, 0pt, 0pt) in
-    let decos =
-      let deco _ _ _ _ = [] in
-        (deco, deco, deco, deco)
-      in
-      let bb-title =
-        form-paragraph ctx
-            (ib-bullet ++ read-inline ctx {\bold{#title;}} ++ inline-fil) in
-      let bb-body =
-        List.map (fun body -> 
-          form-paragraph ctx
-            (inline-skip bullet-width ++ (read-inline ctx body) ++ inline-fil)
-          ) body in
-        List.fold-left (+++) bb-title bb-body
-
-  let-block ctx +skill-groups item =
-      List.map (skill-group ctx) item |> 
-        List.fold-left (+++) block-nil
-
-  let-rec enumerate-item : int -> context -> int -> itemize -> block-boxes
-    | index ctx depth (Item(parent, _)) =
-        let color = get-text-color ctx in
-        let parent-indent = item-indent *' (float depth) in
-        let ib-index =
-          let it-num = (embed-string (arabic index)) in
-            read-inline ctx {(#it-num;)\ }
-        in
-        let index-width = get-natural-width ib-index in
-        let ib-parent =
-          embed-block-top ctx ((get-text-width ctx) -' parent-indent -' index-width) (fun ctx ->
-            form-paragraph (ctx |> set-paragraph-margin item-gap item-gap)
-              (read-inline ctx parent ++ inline-fil)
-          )
-        in
-          form-paragraph (ctx |> set-paragraph-margin item-gap item-gap)
-            ((inline-skip parent-indent) ++ ib-index ++ ib-parent)
-
-
-  let enumerate ctx outer-gap (Item(_, itmzlst)) =
-    let bblst = List.mapi (fun i -> enumerate-item (i + 1) ctx 0) itmzlst in
-    concat-blocks bblst
-
-
-  let-block ctx +enumerate-with-gap outer-gap item =
-    enumerate ctx outer-gap item
-
-
-  let-inline ctx \enumerate-with-gap outer-gap item =
-    let bb = enumerate ctx outer-gap item in
-    inline-fil ++
-      embed-block-breakable ctx
-        (block-skip outer-gap +++ bb +++ block-skip outer-gap)
-      ++ omit-skip-after
 
   let tabbedblock ctx indent pairlst =
     let bclst =
@@ -688,77 +415,6 @@ end = struct
         | Some(indent) -> indent
     in
       tabbedblock ctx indent pairlst
-
-  let description ctx pairlst =
-    let indent = 24pt in
-    let bclst =
-      pairlst |> List.map (fun (item, descr) -> (
-        let br-item =
-          let ctx-item =
-            ctx |> set-font Latin font-latin-bold
-          in
-            read-inline ctx-item item
-        in
-        let br-descr = read-inline ctx descr in
-        let br-pbox =
-          embed-block-top ctx ((get-text-width ctx) -' indent) (fun ctx ->
-            form-paragraph ctx ((inline-skip (0pt -' indent)) ++ br-item ++ (inline-skip 8pt) ++ br-descr ++ inline-fil)
-          )
-        in
-          form-paragraph ctx ((inline-skip indent) ++ br-pbox)
-      ))
-    in
-    block-nil +++> bclst
-
-  let-block ctx +description pairlst =
-    description ctx pairlst
-
-  let-block ctx +twocolumn ?:ratio left-block right-block =
-    let ratio = 
-        match ratio with
-        | None -> 0.65
-        | Some(ratio) -> ratio in
-    let margin = ((get-font-size ctx) *' 1.0) in
-    let left-column-width = ((get-text-width ctx) -' margin) *' ratio in
-    let right-column-width = ((get-text-width ctx) -' margin) *' (1.0 -. ratio) in
-    let br-left-pbox =
-      embed-block-top ctx left-column-width (fun ctx -> read-block ctx left-block) in
-    let br-right-pbox =
-      embed-block-top ctx right-column-width (fun ctx -> read-block ctx right-block) in
-    form-paragraph ctx (br-left-pbox ++ (inline-skip margin) ++ br-right-pbox)
-
-  let-inline ctx \footnote it =
-    let ibf num =
-      let it-num = embed-string (arabic num) in
-      let ctx =
-        let size = get-font-size ctx in
-          ctx |> set-font-size (size *' 0.75)
-              |> set-manual-rising (size *' 0.25)
-      in
-        read-inline ctx {\*#it-num;}
-    in
-    let bbf num =
-      let ib-num = read-inline ctx (embed-string (arabic num)) in
-      let ctx =
-        let size = 12pt in
-          get-standard-context text-width
-            |> set-font-size (size *' 0.9)
-            |> set-leading (size *' 1.2)
-            |> set-paragraph-margin (size *' 0.5) (size *' 0.5)
-      in
-      let len =
-        let (w, _, _) = get-natural-metrics ib-num in
-          footnote-indent -' w
-      in
-      let ib =
-        ib-num ++ inline-skip len ++
-          embed-block-top ctx (text-width -' footnote-indent) (fun ctx -> (
-            line-break false false ctx (read-inline ctx it ++ inline-fil)
-          ))
-      in
-        line-break false false ctx (ib ++ inline-fil)
-    in
-      FootnoteScheme.main ctx ibf bbf
 
     let-rec fold-authors authors-text authors-list = 
     match authors-list with
@@ -833,4 +489,4 @@ end = struct
         >
 end
 
-let document = CV.document
+let document = PublicationList.document
