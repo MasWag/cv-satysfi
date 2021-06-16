@@ -8,6 +8,11 @@
 @require: vdecoset
 @require: footnote-scheme
 
+% SATySFi-base
+@require: base/context
+@require: base/block
+@require: base/inline
+
 type bib-in-proceedings =
   (|
     author    : inline-text list;
@@ -186,14 +191,6 @@ end = struct
     if n <= 0 then inline-nil else
       ib ++ (repeat-inline (n - 1) ib)
 
-
-  let make-dots-line ctx w =
-    let ib = read-inline ctx {.} ++ inline-skip 1pt in
-    let wdot = get-natural-width ib in
-    let n = round (w /' wdot) in
-      inline-fil ++ (repeat-inline n ib)
-
-
   let-mutable show-page-number-ref <- Some(1)
 
 
@@ -215,9 +212,8 @@ end = struct
 
     | it-last :: it-rest ->
         let it =
-          it-rest |> List.reverse |> List.fold-left (fun itacc it -> (
-            {#itacc;#it;,\ }
-          )) {}
+          it-rest |> List.reverse
+                  |> List.fold-left (fun itacc it -> {#itacc;#it;,\ }) {}
         in
           {#it;and #it-last;}
 
@@ -388,33 +384,36 @@ end = struct
 
   let (+++>) = List.fold-left (+++)
 
-  let tabbedblock ctx indent pairlst =
-    let bclst =
-      pairlst |> List.map (fun (item, descr) -> (
-        let br-item =
-          let ctx-item =
+  let tabbedblock ctx indent pair-list =
+    let block-list =
+      pair-list |> List.map (fun (head, body) -> (
+        let inline-head =
+          let ctx-head =
             ctx |> set-font Latin font-latin-bold
           in
-            read-inline ctx-item item
+            Inline.read head ctx-head
         in
-        let br-item-pbox = 
+        let inline-head-paragraph-box =
           embed-block-top ctx indent (fun ctx ->
-            form-paragraph ctx (br-item ++ inline-fil)) in      
-        let br-pbox =
-          embed-block-top ctx ((get-text-width ctx) -' indent -' ((get-font-size ctx) *' 0.5)) (fun ctx -> read-block ctx descr)
+            form-paragraph ctx (inline-head ++ Inline.fil)) in
+        let text-width = Context.get-text-width ctx in
+        let margin-width = (Context.get-font-size ctx) *' 0.5 in
+        let body-width = (text-width -' indent -' margin-width) in
+        let inline-body-paragraph-box =
+          embed-block-top ctx body-width (Block.read body)
         in
-          form-paragraph ctx (br-item-pbox ++ (inline-skip ((get-font-size ctx) *' 0.5)) ++ br-pbox)
-      ) +++ block-skip ((get-font-size ctx) *' 0.05))
+          form-paragraph ctx (inline-head-paragraph-box ++ (Inline.skip margin-width) ++ inline-body-paragraph-box)
+      ) +++ Block.skip ((get-font-size ctx) *' 0.05))
     in
-      block-skip (0pt) +++> bclst
+      Block.skip 0pt +++> block-list
 
-  let-block ctx +tabbedblock ?:indentopt pairlst =
+  let-block ctx +tabbedblock ?:indentopt pair-list =
     let indent = 
         match indentopt with
         | None -> 50pt 
         | Some(indent) -> indent
     in
-      tabbedblock ctx indent pairlst
+      tabbedblock ctx indent pair-list
 
     let-rec fold-authors authors-text authors-list = 
     match authors-list with
