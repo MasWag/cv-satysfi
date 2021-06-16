@@ -17,7 +17,7 @@ jobs:
           export HOME=/root
           eval $(opam env)
           opam update
-          opam install satysfi-fonts-asana-math
+          opam install satysfi-fonts-asana-math satysfi-base
           satyrographos install
       - name: Build with SATySFi
         run: |

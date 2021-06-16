@@ -8,6 +8,11 @@
 @require: vdecoset
 @require: footnote-scheme
 
+% SATySFi-base
+@require: base/context
+@require: base/block
+@require: base/inline
+
 type bib-in-proceedings =
   (|
     author    : inline-text list;
