@@ -17,15 +17,15 @@ jobs:
           export HOME=/root
           eval $(opam env)
           opam update
-          opam install satysfi-fonts-asana-math
+          opam install satysfi-fonts-asana-math satysfi-base
           satyrographos install
       - name: Build with SATySFi
         run: |
           export HOME=/root
           eval $(opam env)
-          satysfi example.saty
+          satysfi ./examples/example.saty
       - name: Upload artifact
         uses: actions/upload-artifact@master
         with:
           name: example
-          path: example.pdf
+          path: ./examples/example.pdf

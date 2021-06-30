@@ -1,5 +1,6 @@
 % -*- coding: utf-8 -*-
-@import: publication_list
+@import: ../src/publication_list
+
   let bibliography = [
     
   (UnderReview(|

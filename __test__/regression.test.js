@@ -34,7 +34,7 @@ test("Satysfi is installed", () => {
 
 describe(`SATySFi-CV class file`, () => {
   it(`Generates CV as expected`, () => {
-    const result = compileSatysfi("../example.saty");
+    const result = compileSatysfi("../examples/example.saty");
 
     expect(result.exitCode).toBe(0);
     expect(result.pdfBuffer).toMatchPdfSnapshot();
@@ -43,7 +43,7 @@ describe(`SATySFi-CV class file`, () => {
 
 describe(`SATySFi-PublicationList class file`, () => {
   it(`Generates publication list as expected`, () => {
-    const result = compileSatysfi("../example_publication_list.saty");
+    const result = compileSatysfi("../examples/example_publication_list.saty");
 
     expect(result.exitCode).toBe(0);
     expect(result.pdfBuffer).toMatchPdfSnapshot();

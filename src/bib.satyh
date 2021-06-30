@@ -1,0 +1,43 @@
+type bib-in-proceedings =
+  (|
+    author    : inline-text list;
+    title     : inline-text;
+    booktitle : inline-text;
+    series    : inline-text option;
+    volume    : int option;
+    number    : inline-text option;
+    pages     : string * string;
+    year      : int;
+  |)
+
+type bib-under-review =
+  (|
+    author    : inline-text list;
+    title     : inline-text;
+    year      : int;
+  |)
+
+type bib-to-appear =
+  (|
+    author    : inline-text list;
+    title     : inline-text;
+    booktitle : inline-text;
+    year      : int;
+  |)
+
+type bib-article =
+  (|
+    author  : inline-text list;
+    title   : inline-text;
+    journal : inline-text;
+    volume  : int option;
+    number  : inline-text option;
+    pages   : string * string;
+    year    : int;
+  |)
+
+type bib-item =
+  | InProceedings of bib-in-proceedings
+  | Article       of bib-article
+  | UnderReview   of bib-under-review
+  | ToAppear      of bib-to-appear

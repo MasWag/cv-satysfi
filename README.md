@@ -6,7 +6,7 @@ cv-satysfi
 
 This is a class in [SATySFi](https://github.com/gfngfn/SATySFi) for Curriculum Vitae. The layout is taken from [Wilson Resume/CV](https://github.com/watsonbox/cv_template_2004). The typesetting is not as good as the original and any contribution is welcome.
 
-![an example of CV](./example.png)
+![an example of CV](./site/example.png)
 
 Dependencies
 ------------
@@ -18,8 +18,8 @@ How to Build the Example
 ------------------------
 
 ```shell
-$ opam install satysfi-fonts-asana-math
+$ opam install satysfi-fonts-asana-math satysfi-base
 $ satyrographos install
-$ satysfi example.saty
+$ satysfi ./examples/example.saty
 ```
 
