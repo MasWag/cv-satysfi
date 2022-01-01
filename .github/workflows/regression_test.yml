@@ -16,7 +16,7 @@ jobs:
         export HOME=/root
         eval $(opam env)
         opam update
-        opam install satysfi-fonts-asana-math satysfi-base
+        opam pin add satysfi-class-cv.opam "file://$PWD"
         satyrographos install
     - name: Run regression tests
       run: |
