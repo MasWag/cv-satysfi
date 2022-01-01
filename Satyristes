@@ -1,0 +1,22 @@
+(version "0.0.2")
+(library
+  (name "class-cv")
+  (version "0.1.0")
+  (sources
+    ((packageDir "src")))
+  (opam "satysfi-class-cv.opam")
+  (dependencies (
+      (base ())
+      (fonts-asana-math ())
+      (parallel ()))))
+
+(libraryDoc
+  (name "class-cv-doc")
+  (version "0.1.0")
+  (workingDirectory "doc")
+  (build
+    ((satysfi "manual.saty" "-o" "manual.pdf")))
+  (sources
+    ((doc "manual.pdf" "doc/manual.pdf")))
+  (opam "satysfi-class-cv-doc.opam")
+  (dependencies ()))

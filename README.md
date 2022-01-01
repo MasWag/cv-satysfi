@@ -18,8 +18,8 @@ How to Build the Example
 ------------------------
 
 ```shell
-$ opam install satysfi-fonts-asana-math satysfi-base
-$ satyrographos install
-$ satysfi ./examples/example.saty
+opam pin add satysfi-class-cv.opam "file://$PWD"
+satyrographos install
+satysfi ./examples/example.saty
 ```
 
