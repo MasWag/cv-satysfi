@@ -13,7 +13,7 @@
 (libraryDoc
   (name "class-cv-doc")
   (version "0.1.0")
-  (workingDirectory "doc")
+  (workingDirectory "./doc")
   (build
     ((satysfi "manual.saty" "-o" "manual.pdf")))
   (sources

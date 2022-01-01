@@ -20,7 +20,12 @@ depends: [
   "satysfi-fonts-asana-math" {>= "000.958+1+satysfi0.0.4"}
   "satysfi-parallel" {>= "0.0.1"}
 ]
-build: [ ]
+build: [
+  ["satyrographos" "opam" "build"
+   "--name" "class-cv"
+   "--prefix" "%{prefix}%"
+   "--script" "%{build}%/Satyristes"]
+]
 install: [
   ["satyrographos" "opam" "install"
    "--name" "class-cv"
