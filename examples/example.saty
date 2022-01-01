@@ -5,10 +5,13 @@
 
 @require: class-cv/cv
 
+% satysfi-parallel
+@require: parallel/parallel
+
 document (|
   name = `John Smith`;
   |) '<
-  +twocolumn ?:(0.5) <
+  +parallel <
   +tabbedblock ?:(60pt)[
     ({Address}, '<
     +p-noindent{123 Broadway,}
@@ -112,7 +115,7 @@ document (|
    }
    >
    +section{Referees} <
-    +twocolumn ?:(0.5) <
+    +parallel <
       +tabbedblock ?:(60pt)[
         ({Name}, '<+p-noindent{Bill Lumbergh}>);
         ({Company}, '<+p-noindent{Initech Inc.}>);

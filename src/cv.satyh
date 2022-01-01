@@ -49,7 +49,6 @@ module CV : sig
   direct \footnote : [inline-text] inline-cmd
   direct +tabbedblock : [length?; (inline-text * block-text) list] block-cmd
   direct +description : [(inline-text * inline-text) list] block-cmd
-  direct +twocolumn : [float?; block-text; block-text] block-cmd
   direct +publications : [bib-item list] block-cmd
 
   direct +listing-with-gap : [bool?; length; itemize] block-cmd
@@ -653,20 +652,6 @@ end = struct
 
   let-block ctx +description pairlst =
     description ctx pairlst
-
-  let-block ctx +twocolumn ?:ratio left-block right-block =
-    let ratio = 
-        match ratio with
-        | None -> 0.65
-        | Some(ratio) -> ratio in
-    let margin = ((get-font-size ctx) *' 1.0) in
-    let left-column-width = ((get-text-width ctx) -' margin) *' ratio in
-    let right-column-width = ((get-text-width ctx) -' margin) *' (1.0 -. ratio) in
-    let br-left-pbox =
-      embed-block-top ctx left-column-width (fun ctx -> read-block ctx left-block) in
-    let br-right-pbox =
-      embed-block-top ctx right-column-width (fun ctx -> read-block ctx right-block) in
-    form-paragraph ctx (br-left-pbox ++ (inline-skip margin) ++ br-right-pbox)
 
   let-inline ctx \footnote it =
     let ibf num =
