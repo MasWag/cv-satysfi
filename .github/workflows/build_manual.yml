@@ -11,7 +11,7 @@ jobs:
     container:
       image: amutake/satysfi:latest
     steps:
-      - uses: actions/checkout@v2.4.0
+      - uses: actions/checkout@v3
       - name: Build and install the manual
         run: |
           export HOME=/root
