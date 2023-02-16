@@ -1,13 +1,10 @@
-name: build
+name: BuildManual
 on: push
 
 jobs:
   publish:
     name: Build manual
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        version: [0.0.4]
     container:
       image: amutake/satysfi:latest
     steps:
