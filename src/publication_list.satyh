@@ -366,23 +366,23 @@ end = struct
       Block.skip 0pt +++> block-list
 
   let-block ctx +tabbedblock ?:indentopt pair-list =
-    let indent = 
+    let indent =
         match indentopt with
-        | None -> 50pt 
+        | None -> 50pt
         | Some(indent) -> indent
     in
       tabbedblock ctx indent pair-list
 
-    let-rec fold-authors authors-text authors-list = 
+    let-rec fold-authors authors-text authors-list =
     match authors-list with
     | [] -> authors-text
     | author :: [] -> {#authors-text;, #author;}
     | author :: xs -> fold-authors {#authors-text;, #author;} xs
 
-    let bib2block bib = 
+    let bib2block bib =
     match bib with
-    | InProceedings(p) -> 
-      let authors = 
+    | InProceedings(p) ->
+      let authors =
         match p#author with
         | [] -> {}
         | author :: [] -> {#author;}
@@ -407,12 +407,12 @@ end = struct
               {})
         | None ->
           {} in
-      let (begin-page-string, end-page-string) = p#pages in 
+      let (begin-page-string, end-page-string) = p#pages in
       let begin-page = embed-string begin-page-string in
       let end-page = embed-string end-page-string in
       (p#year, '<+p-noindent{#authors;. \`\`#title;'', #booktitle;#series;, pp. #begin-page;-#end-page;.}>)
-    | ToAppear(p) -> 
-      let authors = 
+    | ToAppear(p) ->
+      let authors =
         match p#author with
         | [] -> {}
         | author :: [] -> {#author;}
@@ -427,16 +427,32 @@ end = struct
         | None ->
           {\book-title{#rawBooktitle;}, #year;} in
       (p#year, '<+p-noindent{#authors;. \`\`#title;'', #booktitle;, to appear.}>)
-    | UnderReview(p) -> 
-      let authors = 
+    | UnderReview(p) ->
+      let authors =
         match p#author with
         | [] -> {}
         | author :: [] -> {#author;}
         | author :: xs -> fold-authors {#author;} xs in
       let title = p#title in
       (p#year, '<+p-noindent{#authors;. \`\`#title;'', under review.}>)
-    | Article(p) -> 
-      let authors = 
+    | Misc(p) ->
+      let authors =
+        match p#author with
+        | [] -> {}
+        | author :: [] -> {#author;}
+        | author :: xs -> fold-authors {#author;} xs in
+      let title = p#title in
+      let rawBooktitle = p#booktitle in
+      let year = (arabic p#year) |> embed-string in
+      let booktitle =
+        match p#shortbooktitle with
+        | Some(shortbooktitle) ->
+          {\book-title{#rawBooktitle;} (#shortbooktitle;), #year;}
+        | None ->
+          {\book-title{#rawBooktitle;}, #year;} in
+      '<+item{#authors;. \`\`#title;'', #booktitle;.}<>>
+    | Article(p) ->
+      let authors =
         match p#author with
         | [] -> {}
         | author :: [] -> {#author;}
@@ -450,16 +466,16 @@ end = struct
         | None ->
           {\book-title{#rawJournal;}} in
       let volume = match p#volume with
-          | Some(volume) -> embed-string (arabic volume) 
+          | Some(volume) -> embed-string (arabic volume)
           | None -> {} in
       let number = Option.from {} p#number in
-      let (begin-page-string, end-page-string) = p#pages in 
+      let (begin-page-string, end-page-string) = p#pages in
       let begin-page = embed-string begin-page-string in
       let end-page = embed-string end-page-string in
       let year = (arabic p#year) |> embed-string in
       (p#year, '<+p-noindent{#authors;. \`\`#title;'', In #journal; #volume;.#number; (#year;): #begin-page;-#end-page;.} >)
 
-    let-block ctx +publications publist = 
+    let-block ctx +publications publist =
       let indent = 35pt in
       let pairlstInt = List.map bib2block publist in
       let removeDuplicatedYears (lst, latestYear) (year, it) =
