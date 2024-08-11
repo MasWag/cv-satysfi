@@ -5,13 +5,14 @@ jobs:
   regression-test:
     name: Run regression test
     runs-on: ubuntu-latest
-    container:
-      image: zeptometer/satysfi-yarn-diff-pdf:latest
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
       with:
         node-version: 20
+    - uses: hidakatsuya/action-setup-diff-pdf@v1.3.0
+      with:
+        diff-pdf-version: '0.5'
     - name: Install Yarn dependencies
       run: yarn install
     - name: Install Satyrographos dependencies
