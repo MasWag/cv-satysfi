@@ -22,6 +22,8 @@ jobs:
         ./configure
         make
         make install
+    - name: Install Yarn
+      run: npm install -g yarn
     - name: Install Yarn dependencies
       run: yarn install
     - name: Install Satyrographos dependencies
