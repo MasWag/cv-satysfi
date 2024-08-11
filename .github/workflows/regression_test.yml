@@ -13,10 +13,15 @@ jobs:
       with:
         node-version: 20
     - name: Install dependencies
-      run: apt install sudo -y
-    - uses: hidakatsuya/action-setup-diff-pdf@v1.3.0
-      with:
-        diff-pdf-version: '0.5'
+      run: apt-get update && apt-get install make automake g++ libpoppler-glib-dev poppler-utils libwxgtk3.0-gtk3-dev -y
+    - name: Build and install diff-pdf
+      run: |
+        git clone https://github.com/vslavik/diff-pdf.git -b v0.5 --depth 1 /tmp/diff-pdf-src
+        cd /tmp/diff-pdf-src
+        ./bootstrap
+        ./configure
+        make
+        make install
     - name: Install Yarn dependencies
       run: yarn install
     - name: Install Satyrographos dependencies
