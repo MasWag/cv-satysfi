@@ -39,8 +39,18 @@ type bib-article =
     year    : int;
   |)
 
+type bib-to-misc =
+  (|
+    author    : inline-text list;
+    title     : inline-text;
+    booktitle : inline-text;
+    shortbooktitle : inline-text option;
+    year      : int;
+  |)
+
 type bib-item =
   | InProceedings of bib-in-proceedings
   | Article       of bib-article
   | UnderReview   of bib-under-review
   | ToAppear      of bib-to-appear
+  | Misc          of bib-to-misc
