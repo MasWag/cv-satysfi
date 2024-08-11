@@ -5,6 +5,8 @@ jobs:
   regression-test:
     name: Run regression test
     runs-on: ubuntu-latest
+    container:
+      image: amutake/satysfi:latest
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
