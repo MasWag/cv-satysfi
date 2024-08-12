@@ -1,6 +1,6 @@
 opam-version: "2.0"
 name: "satysfi-class-cv"
-version: "0.1.1"
+version: "0.2.0"
 synopsis: "SATySFi class file for Curriculum Vitae"
 description: """
 SATySFi class file for Curriculum Vitae
