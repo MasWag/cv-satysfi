@@ -49,3 +49,12 @@ describe(`SATySFi-PublicationList class file`, () => {
     expect(result.pdfBuffer).toMatchPdfSnapshot();
   });
 });
+
+describe(`SATySFi-Commands`, () => {
+  it(`Generates publication list in StdJa as expected`, () => {
+    const result = compileSatysfi("../examples/example_commands.saty");
+
+    expect(result.exitCode).toBe(0);
+    expect(result.pdfBuffer).toMatchPdfSnapshot();
+  });
+});
