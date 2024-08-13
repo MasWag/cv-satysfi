@@ -17,4 +17,10 @@ document (|
    +p{
    The basic usage of this package is quite similar to the other packages, e.g., stdja. See \code(`examples/example.saty`); and \code(`examples/example_publication_list.saty`); for complete examples.
    }
+
+   +section{New Feature in \SATySFi;-CV 0.2.0} <
+      +p{
+          We support a new feature to typeset the publication list in thirdparty class files, e.g., stdja. See \code(`examples/example_commands.saty`); for an example.
+      }
+   >
 >
