@@ -1,0 +1,54 @@
+name: Format SATySFi Code and Create PR
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Cache Cargo registry
+        uses: actions/cache@v3
+        with:
+          path: ~/.cargo/registry
+          key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-registry-
+
+      - name: Cache Cargo index
+        uses: actions/cache@v3
+        with:
+          path: ~/.cargo/git
+          key: ${{ runner.os }}-cargo-index-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-index-
+
+      - name: Set up Rust toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          components: rustfmt
+
+      - name: Install SATySFi Formatter
+        run: cargo install --force --git https://github.com/usagrada/satysfi-formatter.git --branch main
+
+      - name: Run SATySFi Formatter
+        run: find . -name '*.saty[hg]' -or -name '*.saty' | xargs -I{} satysfi-fmt {} -w
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          title: "Automated Code Formatting Fix"
+          body: "This PR fixes code formatting issues identified by the CI using SATySFi Formatter."
+          commit-message: Automatically format code with SATySFi Formatter
+          branch: format-fix
+          delete-branch: true
+          base: master
+          labels: automated, format
+          reviewers: MasWag
