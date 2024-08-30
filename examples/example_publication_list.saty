@@ -3,12 +3,11 @@
 @require: table
 @require: annot
 @require: class-cv/publication_list
-
 @import: bib
 
-document (|
-  title = `Publication List`;
-  name = `Maski Waga`;
-  |) '<
-  +publications(bibliography);
+document(|
+    title = `Publication List`;
+    name = `Maski Waga`;
+|)'<
+    +publications (bibliography);
 >
