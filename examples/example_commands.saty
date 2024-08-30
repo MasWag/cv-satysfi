@@ -5,20 +5,19 @@
 @require: annot
 @require: class-cv/commands
 @require: enumitem/enumitem
-
 @import: bib
 
-document (|
-  title = `Publication List`;
-  name = `Maski Waga`;
-  |) '<
-  +section{listing}<
-    +publications-listing(bibliography);
-  >
-  +section{enumerate}<
-    +publications-enumerate(bibliography);
-  >
-  +section{bracket-Alph with itemize}<
-    +publications-itemize(EnumitemAlias.bracket-Alph)(bibliography);
-  >
+document(|
+    title = `Publication List`;
+    name = `Maski Waga`;
+|)'<
+    +section { listing } <
+        +publications-listing (bibliography);
+    >
+    +section { enumerate } <
+        +publications-enumerate (bibliography);
+    >
+    +section { bracket-Alph with itemize } <
+        +publications-itemize (EnumitemAlias.bracket-Alph) (bibliography);
+    >
 >

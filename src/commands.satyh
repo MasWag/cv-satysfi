@@ -4,7 +4,6 @@
 @require: base/inline
 @require: base/ref
 @require: enumitem/enumitem
-
 @import: bib
 
 type publication-list-config = (|
@@ -12,146 +11,149 @@ type publication-list-config = (|
     font-latin-italic: string;
 |)
 
-module PublicationList : sig
+module PublicationList: sig
     val default-config: publication-list-config
     val set-config: publication-list-config -> unit
-
-    direct +publications-listing : [bib-item list] block-cmd
-    direct +publications-enumerate : [bib-item list] block-cmd
-    direct +publications-itemize : [context -> int list -> itemconfig; bib-item list] block-cmd
+    direct +publications-listing: [bib-item list] block-cmd
+    direct +publications-enumerate: [bib-item list] block-cmd
+    direct +publications-itemize: [
+        context -> int list -> itemconfig;
+        bib-item list;
+    ] block-cmd
 end = struct
-    let default-config = (|
-        font-ratio-latin = 1.0;
-        font-latin-italic = `Junicode-it`;
-    |)
-
+    let default-config =
+        (|
+            font-ratio-latin = 1.0;
+            font-latin-italic = `Junicode-it`;
+        |)
     let config = Ref.make default-config
-
     let set-config new-config = Ref.set new-config config
 
     let-inline ctx \book-title it =
-      let config = (Ref.get config) in
-      let font-ratio-latin = config#font-ratio-latin in
-      let font-latin-italic = config#font-latin-italic in
-      read-inline (ctx |>
-        set-font Latin (font-latin-italic, font-ratio-latin, 0.)) it
+        let config = (Ref.get config) in
+        let font-ratio-latin = config#font-ratio-latin in
+        let font-latin-italic = config#font-latin-italic in
+            read-inline (ctx
+                |> set-font Latin (font-latin-italic, font-ratio-latin, 0.)) it
 
-    let-rec fold-authors authors-text authors-list =
-      match authors-list with
-      | [] -> authors-text
-      | author :: [] -> {#authors-text;, #author;}
-      | author :: xs -> fold-authors {#authors-text;, #author;} xs
+    let-rec fold-authors authors-text authors-list = match authors-list with
+            | [] -> authors-text
+            | author :: [] -> { #authors-text;, #author; }
+            | author :: xs -> fold-authors { #authors-text;, #author; } xs
 
     let bib2block bib =
-    match bib with
-    | InProceedings(p) ->
-      let authors =
-        match p#author with
-        | [] -> {}
-        | author :: [] -> {#author;}
-        | author :: xs -> fold-authors {#author;} xs in
-      let title = p#title in
-      let rawBooktitle = p#booktitle in
-      let year = (arabic p#year) |> embed-string in
-      let booktitle =
-        match p#shortbooktitle with
-        | Some(shortbooktitle) ->
-          {\book-title{#rawBooktitle;} (#shortbooktitle;), #year;}
-        | None ->
-          {\book-title{#rawBooktitle;}, #year;} in
-      let series =
-        match p#series with
-        | Some(series) ->
-            (match p#volume with
-            | Some(volume) ->
-              let volume-string = arabic(volume) |> embed-string in
-              {, #series; #volume-string;}
-            | None ->
-              {})
-        | None ->
-          {} in
-      let (begin-page-string, end-page-string) = p#pages in
-      let begin-page = embed-string begin-page-string in
-      let end-page = embed-string end-page-string in
-      '<+item{#authors;. \`\`#title;'', #booktitle;#series;, pp. #begin-page;-#end-page;.}<>>
-    | ToAppear(p) ->
-      let authors =
-        match p#author with
-        | [] -> {}
-        | author :: [] -> {#author;}
-        | author :: xs -> fold-authors {#author;} xs in
-      let title = p#title in
-      let rawBooktitle = p#booktitle in
-      let year = (arabic p#year) |> embed-string in
-      let booktitle =
-        match p#shortbooktitle with
-        | Some(shortbooktitle) ->
-          {\book-title{#rawBooktitle;} (#shortbooktitle;), #year;}
-        | None ->
-          {\book-title{#rawBooktitle;}, #year;} in
-      '<+item{#authors;. \`\`#title;'', #booktitle;, to appear.}<> >
-    | UnderReview(p) ->
-      let authors =
-        match p#author with
-        | [] -> {}
-        | author :: [] -> {#author;}
-        | author :: xs -> fold-authors {#author;} xs in
-      let title = p#title in
-      '<+item{#authors;. \`\`#title;'', under review.}<>>
-    | Misc(p) ->
-      let authors =
-        match p#author with
-        | [] -> {}
-        | author :: [] -> {#author;}
-        | author :: xs -> fold-authors {#author;} xs in
-      let title = p#title in
-      let rawBooktitle = p#booktitle in
-      let year = (arabic p#year) |> embed-string in
-      let booktitle =
-        match p#shortbooktitle with
-        | Some(shortbooktitle) ->
-          {\book-title{#rawBooktitle;} (#shortbooktitle;), #year;}
-        | None ->
-          {\book-title{#rawBooktitle;}, #year;} in
-      '<+item{#authors;. \`\`#title;'', #booktitle;.}<>>
-    | Article(p) ->
-      let authors =
-        match p#author with
-        | [] -> {}
-        | author :: [] -> {#author;}
-        | author :: xs -> fold-authors {#author;} xs in
-      let title = p#title in
-      let rawJournal = p#journal in
-      let journal =
-        match p#shortjournal with
-        | Some(shortjournal) ->
-          {\book-title{#rawJournal;} (#shortjournal;)}
-        | None ->
-          {\book-title{#rawJournal;}} in
-      let volume = match p#volume with
-          | Some(volume) -> embed-string (arabic volume)
-          | None -> {} in
-      let number = Option.from {} p#number in
-      let (begin-page-string, end-page-string) = p#pages in
-      let begin-page = embed-string begin-page-string in
-      let end-page = embed-string end-page-string in
-      let year = (arabic p#year) |> embed-string in
-      '<+item{#authors;. \`\`#title;'', In #journal; #volume;.#number; (#year;): #begin-page;-#end-page;.}<> >
+        match bib with
+            | InProceedings(p) -> let authors =
+                match p#author with
+                    | [] -> {}
+                    | author :: [] -> { #author; }
+                    | author :: xs -> fold-authors { #author; } xs in
+            let title = p#title in
+            let rawBooktitle = p#booktitle in
+            let year =
+                (arabic p#year)
+                    |> embed-string in
+            let booktitle =
+                match p#shortbooktitle with
+                    | Some(shortbooktitle) -> { \book-title { #rawBooktitle; } (#shortbooktitle;), #year; }
+                    | None -> { \book-title { #rawBooktitle; }, #year; } in
+            let series =
+                match p#series with
+                    | Some(series) -> (match p#volume with
+                        | Some(volume) -> let volume-string =
+                            arabic (volume)
+                                |> embed-string in { , #series; #volume-string; }
+                        | None -> {})
+                    | None -> {} in
+            let (begin-page-string, end-page-string) = p#pages in
+            let begin-page = embed-string begin-page-string in
+            let end-page = embed-string end-page-string in
+                '<
+                    +item { #authors;. \`\`#title;'', #booktitle;#series;, pp. #begin-page;-#end-page;. } <>
+                >
+            | ToAppear(p) -> let authors =
+                match p#author with
+                    | [] -> {}
+                    | author :: [] -> { #author; }
+                    | author :: xs -> fold-authors { #author; } xs in
+            let title = p#title in
+            let rawBooktitle = p#booktitle in
+            let year =
+                (arabic p#year)
+                    |> embed-string in
+            let booktitle =
+                match p#shortbooktitle with
+                    | Some(shortbooktitle) -> { \book-title { #rawBooktitle; } (#shortbooktitle;), #year; }
+                    | None -> { \book-title { #rawBooktitle; }, #year; } in
+                '<
+                    +item { #authors;. \`\`#title;'', #booktitle;, to appear. } <>
+                >
+            | UnderReview(p) -> let authors =
+                match p#author with
+                    | [] -> {}
+                    | author :: [] -> { #author; }
+                    | author :: xs -> fold-authors { #author; } xs in
+            let title = p#title in
+                '<
+                    +item { #authors;. \`\`#title;'', under review. } <>
+                >
+            | Misc(p) -> let authors =
+                match p#author with
+                    | [] -> {}
+                    | author :: [] -> { #author; }
+                    | author :: xs -> fold-authors { #author; } xs in
+            let title = p#title in
+            let rawBooktitle = p#booktitle in
+            let year =
+                (arabic p#year)
+                    |> embed-string in
+            let booktitle =
+                match p#shortbooktitle with
+                    | Some(shortbooktitle) -> { \book-title { #rawBooktitle; } (#shortbooktitle;), #year; }
+                    | None -> { \book-title { #rawBooktitle; }, #year; } in
+                '<
+                    +item { #authors;. \`\`#title;'', #booktitle;. } <>
+                >
+            | Article(p) -> let authors =
+                match p#author with
+                    | [] -> {}
+                    | author :: [] -> { #author; }
+                    | author :: xs -> fold-authors { #author; } xs in
+            let title = p#title in
+            let rawJournal = p#journal in
+            let journal =
+                match p#shortjournal with
+                    | Some(shortjournal) -> { \book-title { #rawJournal; } (#shortjournal;) }
+                    | None -> { \book-title { #rawJournal; } } in
+            let volume =
+                match p#volume with
+                    | Some(volume) -> embed-string (arabic volume)
+                    | None -> {} in
+            let number = Option.from {} p#number in
+            let (begin-page-string, end-page-string) = p#pages in
+            let begin-page = embed-string begin-page-string in
+            let end-page = embed-string end-page-string in
+            let year =
+                (arabic p#year)
+                    |> embed-string in
+                '<
+                    +item { #authors;. \`\`#title;'', In #journal; #volume;.#number; (#year;): #begin-page;-#end-page;. } <>
+                >
 
     let itemize-scheme ctx itemfmt publist =
-      let blockTexts = List.map bib2block publist in
-      let items =  List.fold-left (fun left right -> '<#left; #right;>) '<> blockTexts in
-      let body = '<
-        +itemize(itemfmt) (items);
-      > in
-      Block.read body ctx
+        let blockTexts = List.map bib2block publist in
+        let items =
+            List.fold-left (fun left right -> '<
+                #left;
+                #right;
+            >) '<> blockTexts in
+        let body = '<
+            +itemize (itemfmt) (items);
+        > in Block.read body ctx
 
-    let-block ctx +publications-listing publist = % '<
-      itemize-scheme ctx EnumitemAlias.bullet publist
-
-    let-block ctx +publications-enumerate publist =
-      itemize-scheme ctx EnumitemAlias.dot-arabic publist
-
-    let-block ctx +publications-itemize itemfmt publist =
-      itemize-scheme ctx itemfmt publist
+    let-block ctx +publications-listing publist =
+        % '<
+        itemize-scheme ctx EnumitemAlias.bullet publist
+    let-block ctx +publications-enumerate publist = itemize-scheme ctx EnumitemAlias.dot-arabic publist
+    let-block ctx +publications-itemize itemfmt publist = itemize-scheme ctx itemfmt publist
 end
