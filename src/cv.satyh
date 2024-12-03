@@ -550,11 +550,15 @@ end = struct
                                 |> embed-string in { , #series; #volume-string; }
                         | None -> {})
                     | None -> {} in
-            let (begin-page-string, end-page-string) = p#pages in
-            let begin-page = embed-string begin-page-string in
-            let end-page = embed-string end-page-string in
+            let pages =
+                match p#pages with
+                | Some ((begin-page-string, end-page-string)) ->
+                    let begin-page = embed-string begin-page-string in
+                    let end-page = embed-string end-page-string in
+                    { , pp. #begin-page;-#end-page; }
+                | None -> {} in
                 (p#year, '<
-                    +p-noindent { #authors;. \`\`#title;'', #booktitle;#series;, pp. #begin-page;-#end-page;. }
+                    +p-noindent { #authors;. \`\`#title;'', #booktitle;#series;#pages;. }
                 >)
             | ToAppear(p) -> let authors =
                 match p#author with
