@@ -23,7 +23,9 @@ end = struct
     let slateblue = Color.rgb 0.17 0.22 0.34
 
     let generate-fresh-label =
-        let-mutable count <- 0 in (fun () -> (let () = count <- !count + 1 in `generated:` ^ (arabic (!count))))
+        let-mutable count <- 0 in
+            (fun () -> (let () = count <- !count + 1 in
+            `generated:` ^ (arabic (!count))))
     let font-size-normal = 12pt
     let font-size-title = 32pt
     let font-size-author = 16pt
@@ -121,7 +123,8 @@ end = struct
         let ib =
             read-inline (ctx
                 |> set-text-color Color.white) it in
-        let w = get-natural-width ib in ib ++ inline-skip (0pt -' w)
+        let w = get-natural-width ib in
+        ib ++ inline-skip (0pt -' w)
 
     let-rec repeat-inline n ib = if n <= 0
         then
@@ -134,7 +137,8 @@ end = struct
     let bib-entry ctx cite-num ib-main =
         let ib-num = read-inline ctx (embed-string (`[` ^ arabic cite-num ^ `] `#)) in
         let ib = inline-skip (0pt -' get-natural-width ib-num) ++ ib-num ++ ib-main ++ inline-fil in
-        let pads = (bib-left-padding, 0pt, 0pt, 0pt) in block-frame-breakable ctx pads VDecoSet.empty (fun ctx -> line-break true true ctx ib)
+        let pads = (bib-left-padding, 0pt, 0pt, 0pt) in
+        block-frame-breakable ctx pads VDecoSet.empty (fun ctx -> line-break true true ctx ib)
 
     let join-authors lst =
         match List.reverse lst with
@@ -144,7 +148,8 @@ end = struct
             | it-last :: it-rest -> let it =
                 it-rest
                     |> List.reverse
-                    |> List.fold-left (fun itacc it -> { #itacc;#it;,\ }) {} in { #it;and #it-last; }
+                    |> List.fold-left (fun itacc it -> { #itacc;#it;,\ }) {} in
+            { #it;and #it-last; }
 
     let-inline ctx \book-title it =
         read-inline (ctx
@@ -160,8 +165,10 @@ end = struct
                 | Some(it) -> { \ of \book-title { #it; },\ } in
             match (optvol, optnum) with
                 | (None, _) -> { \ }
-                | (Some(v), None) -> let itv = embed-string (arabic v) in { #itv;#its; }
-                | (Some(v), Some(n)) -> let itv = embed-string (arabic v) in { #itv;(#n;)#its; }
+                | (Some(v), None) -> let itv = embed-string (arabic v) in
+                { #itv;#its; }
+                | (Some(v), Some(n)) -> let itv = embed-string (arabic v) in
+                { #itv;(#n;)#its; }
     let make-pages (p1, p2) = embed-string ((arabic p1) ^ `–` ^ (arabic p2))
     let paper-width = 182mm
     let paper-height = 257mm
@@ -182,7 +189,8 @@ end = struct
         let ctx-title = make-section-title ctx in
         let ib-title = read-inline ctx-title title in
         let bb-title = section-heading ctx (ib-title ++ (inline-fil)) in
-        let bb-inner = read-block ctx inner in bb-title +++ bb-inner
+        let bb-inner = read-block ctx inner in
+        bb-title +++ bb-inner
 
     let subsection-scheme ctx label title inner =
         let ctx-title = make-subsection-title ctx in
@@ -190,7 +198,8 @@ end = struct
         let bb-title =
             line-break true false (ctx
                 |> set-paragraph-margin section-top-margin section-bottom-margin) (ib-title ++ (inline-fil)) in
-        let bb-inner = read-block ctx inner in bb-title +++ bb-inner
+        let bb-inner = read-block ctx inner in
+        bb-title +++ bb-inner
 
     let-inline ctx \rule width height offsetX offsetY =
         let color = Color.black in
@@ -225,7 +234,8 @@ end = struct
                     |> set-font Latin font-latin-bold
                     |> set-font-size 20pt
                     |> set-text-color slateblue in
-            let leftf ctx it = line-break true true ctx (read-inline ctx it ++ inline-fil) in (leftf ctx-title (embed-string title)) +++ (leftf ctx-title { \rule (text-width) (0.5mm) (0pt) (0pt); }) in
+            let leftf ctx it = line-break true true ctx (read-inline ctx it ++ inline-fil) in
+            (leftf ctx-title (embed-string title)) +++ (leftf ctx-title { \rule (text-width) (0.5mm) (0pt) (0pt); }) in
         % -- main --
         let bb-main = read-block ctx-doc inner in
         % -- page settings --
@@ -255,21 +265,25 @@ end = struct
                             (bbacc +++ bbs, acc)
                         else
                             (bbacc, elem :: acc))) (block-nil, []) in
-                let () = ref-float-boxes <- acc in bb-float-boxes in
+                let () = ref-float-boxes <- acc in
+                bb-float-boxes in
             let footer =
                 match !show-page-number-ref with
                     | Some(pagenolast) -> let ctx = get-standard-context ftrwid in
-                    let it-pageno = embed-string (arabic (pageno - pagenolast + 1)) in line-break true true ctx (inline-fil ++ (read-inline ctx { — #it-pageno; — }) ++ inline-fil)
+                    let it-pageno = embed-string (arabic (pageno - pagenolast + 1)) in
+                    line-break true true ctx (inline-fil ++ (read-inline ctx { — #it-pageno; — }) ++ inline-fil)
                     | None -> block-nil in
                 (|
                     header-origin = hdrorg;
                     header-content = header;
                     footer-origin = ftrorg;
                     footer-content = footer;
-                |) in page-break page pagecontf pagepartsf (bb-title +++ bb-main)
+                |) in
+        page-break page pagecontf pagepartsf (bb-title +++ bb-main)
 
     let-block ctx +p-noindent inner =
-        let ib-inner = read-inline ctx inner ++ inline-fil in form-paragraph ctx ib-inner
+        let ib-inner = read-inline ctx inner ++ inline-fil in
+        form-paragraph ctx ib-inner
 
     let (+++>) = List.fold-left ( +++ )
 
@@ -279,18 +293,22 @@ end = struct
                 |> List.map (fun (head, body) -> (let inline-head =
                 let ctx-head =
                     ctx
-                        |> set-font Latin font-latin-bold in Inline.read head ctx-head in
+                        |> set-font Latin font-latin-bold in
+                Inline.read head ctx-head in
             let inline-head-paragraph-box = embed-block-top ctx indent (fun ctx -> form-paragraph ctx (inline-head ++ Inline.fil)) in
             let text-width = Context.get-text-width ctx in
             let margin-width = (Context.get-font-size ctx) *' 0.5 in
             let body-width = (text-width -' indent -' margin-width) in
-            let inline-body-paragraph-box = embed-block-top ctx body-width (Block.read body) in form-paragraph ctx (inline-head-paragraph-box ++ (Inline.skip margin-width) ++ inline-body-paragraph-box)) +++ Block.skip ((get-font-size ctx) *' 0.05)) in Block.skip 0pt +++> block-list
+            let inline-body-paragraph-box = embed-block-top ctx body-width (Block.read body) in
+            form-paragraph ctx (inline-head-paragraph-box ++ (Inline.skip margin-width) ++ inline-body-paragraph-box)) +++ Block.skip ((get-font-size ctx) *' 0.05)) in
+        Block.skip 0pt +++> block-list
 
     let-block ctx +tabbedblock ?:indentopt pair-list =
         let indent =
             match indentopt with
                 | None -> 50pt
-                | Some(indent) -> indent in tabbedblock ctx indent pair-list
+                | Some(indent) -> indent in
+        tabbedblock ctx indent pair-list
 
     let-rec fold-authors authors-text authors-list = match authors-list with
             | [] -> authors-text
@@ -318,16 +336,16 @@ end = struct
                     | Some(series) -> (match p#volume with
                         | Some(volume) -> let volume-string =
                             arabic (volume)
-                                |> embed-string in { , #series; #volume-string; }
+                                |> embed-string in
+                        { , #series; #volume-string; }
                         | None -> {})
                     | None -> {} in
             let pages =
                 match p#pages with
-                | Some ((begin-page-string, end-page-string)) ->
-                    let begin-page = embed-string begin-page-string in
+                    | Some((begin-page-string, end-page-string)) -> let begin-page = embed-string begin-page-string in
                     let end-page = embed-string end-page-string in
-                    {, pp. #begin-page;-#end-page;}
-                | None -> {} in
+                    { , pp. #begin-page;-#end-page; }
+                    | None -> {} in
                 (p#year, '<
                     +p-noindent { #authors;. \`\`#title;'', #booktitle;#series;#pages;. }
                 >)
