@@ -36,7 +36,7 @@ jobs:
           components: rustfmt
 
       - name: Install SATySFi Formatter
-        run: cargo install --force --git https://github.com/usagrada/satysfi-formatter.git --branch main
+        run: cargo install --force --git https://github.com/MasWag/satysfi-formatter.git --branch develop
 
       - name: Run SATySFi Formatter
         run: find . -name '*.saty[hg]' -or -name '*.saty' | xargs -I{} satysfi-fmt {} -w
