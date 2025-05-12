@@ -30,7 +30,7 @@ let bibliography =
             series = None;
             volume = None;
             number = None;
-            pages = Some (`11:1`, `11:13`);
+            pages = Some(`11:1`, `11:13`);
             year = 2020;
         |));
         (InProceedings(|
@@ -41,7 +41,7 @@ let bibliography =
             series = None;
             volume = None;
             number = None;
-            pages = Some (`3`, `22`);
+            pages = Some(`3`, `22`);
             year = 2019;
         |));
         (InProceedings(|
@@ -52,7 +52,7 @@ let bibliography =
             series = None;
             volume = None;
             number = None;
-            pages = Some (`520`, `539`);
+            pages = Some(`520`, `539`);
             year = 2019;
         |));
         (InProceedings(|
@@ -63,7 +63,7 @@ let bibliography =
             series = None;
             volume = None;
             number = None;
-            pages = Some (`371`, `389`);
+            pages = Some(`371`, `389`);
             year = 2019;
         |));
         (Article(|
@@ -84,7 +84,7 @@ let bibliography =
             series = None;
             volume = None;
             number = None;
-            pages = Some (`14`, `15`);
+            pages = Some(`14`, `15`);
             year = 2018;
         |));
         (InProceedings(|
@@ -95,7 +95,7 @@ let bibliography =
             series = None;
             volume = None;
             number = None;
-            pages = Some (`10`, `20`);
+            pages = Some(`10`, `20`);
             year = 2018;
         |));
         (InProceedings(|
@@ -106,7 +106,7 @@ let bibliography =
             series = None;
             volume = None;
             number = None;
-            pages = Some (`224`, `243`);
+            pages = Some(`224`, `243`);
             year = 2017;
         |));
         (InProceedings(|
