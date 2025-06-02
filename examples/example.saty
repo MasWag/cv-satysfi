@@ -3,7 +3,6 @@
 @require: table
 @require: annot
 @require: parallel/parallel
-
 @import: ../src/cv
 
 % satysfi-parallel
