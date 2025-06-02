@@ -3,9 +3,9 @@
 @require: table
 @require: stdja
 @require: annot
-@require: class-cv/commands
 @require: enumitem/enumitem
 @import: bib
+@import: ../src/commands
 
 document(|
     title = `Publication List`;

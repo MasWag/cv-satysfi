@@ -2,7 +2,7 @@
 @require: itemize
 @require: table
 @require: annot
-@require: class-cv/publication_list
+@import: ../src/publication_list
 @import: bib
 
 document(|

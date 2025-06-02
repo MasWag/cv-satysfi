@@ -2,8 +2,9 @@
 @require: itemize
 @require: table
 @require: annot
-@require: class-cv/cv
 @require: parallel/parallel
+
+@import: ../src/cv
 
 % satysfi-parallel
 document(|name = `John Smith`|)'<
