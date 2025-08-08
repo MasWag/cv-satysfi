@@ -11,7 +11,7 @@
     "jest-pdf-snapshot": "^0.5.4",
     "prettier": "3.6.2",
     "shelljs": "^0.10.0",
-    "tmp": "^0.2.4"
+    "tmp": "^0.2.5"
   },
   "scripts": {
     "test": "jest"
