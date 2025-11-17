@@ -1,7 +1,7 @@
 (version "0.0.2")
 (library
   (name "class-cv")
-  (version "0.2.1")
+  (version "0.2.2")
   (sources
     ((packageDir "src")))
   (opam "satysfi-class-cv.opam")
