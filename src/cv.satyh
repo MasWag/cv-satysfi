@@ -602,8 +602,12 @@ end = struct
                     let end-page = embed-string end-page-string in
                     { , pp. #begin-page;-#end-page; }
                     | None -> {} in
+                let note =
+                    match p#note with
+                        | Some(note) -> note
+                        | None -> {} in
                 (p#year, '<
-                    +p-noindent { #authors;. \`\`#title;'', #booktitle;#series;#pages;. }
+                    +p-noindent { #authors;. \`\`#title;'', #booktitle;#series;#pages;.  #note;}
                 >)
             | ToAppear(p) -> let authors =
                 match p#author with
@@ -619,8 +623,12 @@ end = struct
                 match p#shortbooktitle with
                     | Some(shortbooktitle) -> { \book-title { #rawBooktitle; } (#shortbooktitle;), #year; }
                     | None -> { \book-title { #rawBooktitle; }, #year; } in
+            let note =
+                match p#note with
+                    | Some(note) -> note
+                    | None -> {} in
                 (p#year, '<
-                    +p-noindent { #authors;. \`\`#title;'', #booktitle;, to appear. }
+                    +p-noindent { #authors;. \`\`#title;'', #booktitle;, to appear. #note;}
                 >)
             | UnderReview(p) -> let authors =
                 match p#author with
@@ -628,8 +636,12 @@ end = struct
                     | author :: [] -> { #author; }
                     | author :: xs -> fold-authors { #author; } xs in
             let title = p#title in
+            let note =
+                match p#note with
+                    | Some(note) -> note
+                    | None -> {} in
                 (p#year, '<
-                    +p-noindent { #authors;. \`\`#title;'', under review. }
+                    +p-noindent { #authors;. \`\`#title;'', under review. #note; }
                 >)
             | Misc(p) -> let authors =
                 match p#author with
@@ -645,8 +657,12 @@ end = struct
                 match p#shortbooktitle with
                     | Some(shortbooktitle) -> { \book-title { #rawBooktitle; } (#shortbooktitle;), #year; }
                     | None -> { \book-title { #rawBooktitle; }, #year; } in
+            let note =
+                match p#note with
+                    | Some(note) -> note
+                    | None -> {} in
                 (p#year, '<
-                    +p-noindent { #authors;. \`\`#title;'', #booktitle;. }
+                    +p-noindent { #authors;. \`\`#title;'', #booktitle;. #note; }
                 >)
             | Article(p) -> let authors =
                 match p#author with
@@ -670,8 +686,12 @@ end = struct
             let year =
                 (arabic p#year)
                     |> embed-string in
+            let note =
+                match p#note with
+                    | Some(note) -> note
+                    | None -> {} in
                 (p#year, '<
-                    +p-noindent { #authors;. \`\`#title;'', In #journal; #volume;.#number; (#year;): #begin-page;-#end-page;. }
+                    +p-noindent { #authors;. \`\`#title;'', In #journal; #volume;.#number; (#year;): #begin-page;-#end-page;. #note; }
                 >)
 
     let-block ctx +publications publist =

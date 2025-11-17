@@ -81,18 +81,20 @@ end = struct
                         | Some(series) -> (match p#volume with
                             | Some(volume) -> let volume-string =
                                 arabic (volume)
-                                    |> embed-string in
-                            { , #series; #volume-string; }
+                                    |> embed-string in { , #series; #volume-string; }
                             | None -> {})
                         | None -> {} in
                 let pages =
                     match p#pages with
                         | Some((begin-page-string, end-page-string)) -> let begin-page = embed-string begin-page-string in
-                        let end-page = embed-string end-page-string in
-                        { , pp. #begin-page;-#end-page; }
+                        let end-page = embed-string end-page-string in { , pp. #begin-page;-#end-page; }
+                        | None -> {} in
+                let note =
+                    match p#note with
+                        | Some(note) -> note
                         | None -> {} in
                     '<
-                        +item-optional (itemfmt) { #authors;. \`\`#title;'', #booktitle;#series; #pages;. } <
+                        +item-optional (itemfmt) { #authors;. \`\`#title;'', #booktitle;#series; #pages;. #note; } <
                             #inner;
                         >
                     >
@@ -110,8 +112,12 @@ end = struct
                     match p#shortbooktitle with
                         | Some(shortbooktitle) -> { \book-title { #rawBooktitle; } (#shortbooktitle;), #year; }
                         | None -> { \book-title { #rawBooktitle; }, #year; } in
+                let note =
+                    match p#note with
+                        | Some(note) -> note
+                        | None -> {} in
                     '<
-                        +item-optional (itemfmt) { #authors;. \`\`#title;'', #booktitle;, to appear. } <
+                        +item-optional (itemfmt) { #authors;. \`\`#title;'', #booktitle;, to appear. #note;} <
                             #inner;
                         >
                     >
@@ -121,8 +127,12 @@ end = struct
                         | author :: [] -> { #author; }
                         | author :: xs -> fold-authors { #author; } xs in
                 let title = p#title in
+                let note =
+                    match p#note with
+                        | Some(note) -> note
+                        | None -> {} in
                     '<
-                        +item-optional (itemfmt) { #authors;. \`\`#title;'', under review. } <
+                        +item-optional (itemfmt) { #authors;. \`\`#title;'', under review. #note;} <
                             #inner;
                         >
                     >
@@ -140,8 +150,12 @@ end = struct
                     match p#shortbooktitle with
                         | Some(shortbooktitle) -> { \book-title { #rawBooktitle; } (#shortbooktitle;), #year; }
                         | None -> { \book-title { #rawBooktitle; }, #year; } in
+                let note =
+                    match p#note with
+                        | Some(note) -> note
+                        | None -> {} in
                     '<
-                        +item-optional (itemfmt) { #authors;. \`\`#title;'', #booktitle;. } <
+                        +item-optional (itemfmt) { #authors;. \`\`#title;'', #booktitle;. #note;} <
                             #inner;
                         >
                     >
@@ -167,8 +181,12 @@ end = struct
                 let year =
                     (arabic p#year)
                         |> embed-string in
+                let note =
+                    match p#note with
+                        | Some(note) -> note
+                        | None -> {} in
                     '<
-                        +item-optional (itemfmt) { #authors;. \`\`#title;'', In #journal; #volume;.#number; (#year;): #begin-page;-#end-page;. } <
+                        +item-optional (itemfmt) { #authors;. \`\`#title;'', In #journal; #volume;.#number; (#year;): #begin-page;-#end-page;. #note; } <
                             #inner;
                         >
                     >
@@ -182,8 +200,7 @@ end = struct
             >) '<> blockTexts in
         let body = '<
             +itemize (itemfmt) (items);
-        > in
-        Block.read body ctx
+        > in Block.read body ctx
 
     let-block ctx +publications-listing publist = itemize-scheme ctx EnumitemAlias.bullet publist
     let-block ctx +publications-enumerate publist = itemize-scheme ctx EnumitemAlias.dot-arabic publist
@@ -192,6 +209,5 @@ end = struct
         let item =
             match itemfmt with
                 | Some(itemfmt) -> bib2block ?:(itemfmt) ?:(inner) pubitem
-                | None -> bib2block ?* ?:(inner) pubitem in
-        read-block ctx item
+                | None -> bib2block ?* ?:(inner) pubitem in read-block ctx item
 end

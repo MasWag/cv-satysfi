@@ -8,11 +8,13 @@ type bib-in-proceedings = (|
     number: inline-text option;
     pages: (string * string) option;
     year: int;
+    note: inline-text option;
 |)
 type bib-under-review = (|
     author: inline-text list;
     title: inline-text;
     year: int;
+    note: inline-text option;
 |)
 type bib-to-appear = (|
     author: inline-text list;
@@ -20,6 +22,7 @@ type bib-to-appear = (|
     booktitle: inline-text;
     shortbooktitle: inline-text option;
     year: int;
+    note: inline-text option;
 |)
 type bib-article = (|
     author: inline-text list;
@@ -30,6 +33,7 @@ type bib-article = (|
     number: inline-text option;
     pages: string * string;
     year: int;
+    note: inline-text option;
 |)
 type bib-to-misc = (|
     author: inline-text list;
@@ -37,5 +41,6 @@ type bib-to-misc = (|
     booktitle: inline-text;
     shortbooktitle: inline-text option;
     year: int;
+    note: inline-text option;
 |)
 type bib-item =  | InProceedings of bib-in-proceedings | Article of bib-article | UnderReview of bib-under-review | ToAppear of bib-to-appear | Misc of bib-to-misc
