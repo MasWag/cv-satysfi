@@ -35,7 +35,7 @@ let bibliography =
             number = None;
             pages = Some(`11:1`, `11:13`);
             year = 2020;
-            note = Some{Citation: 64 (Google Scholar)};
+            note = Some { Citation: 64 (Google Scholar) };
         |));
         (InProceedings(|
             author = { |Masaki Waga| };
