@@ -43,4 +43,4 @@ type bib-to-misc = (|
     year: int;
     note: inline-text option;
 |)
-type bib-item =  | InProceedings of bib-in-proceedings | Article of bib-article | UnderReview of bib-under-review | ToAppear of bib-to-appear | Misc of bib-to-misc
+type bib-item = InProceedings of bib-in-proceedings | Article of bib-article | UnderReview of bib-under-review | ToAppear of bib-to-appear | Misc of bib-to-misc
