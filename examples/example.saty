@@ -47,25 +47,26 @@ document(|name = `John Smith`|)'<
             ({ 2007-2009 }, '<
                 +p-noindent { Advanced Secondary Education - Corfe Hills School, Broadstone, Dorset, England }
                 +p-noindent {
-                    \tabular (fun t -> (let (c, l, r) = (t#c, t#l, t#r) in
-                        [
+                    \tabular (fun t ->
+                        (let (c, l, r) = (t#c, t#l, t#r) in
                             [
-                                l { \emph { Pure Mathematics } };
-                                l { A };
-                            ];
-                            [
-                                l { \emph { Statics (AS) } };
-                                l { A };
-                            ];
-                            [
-                                l { \emph { Physics } };
-                                l { A };
-                            ];
-                            [
-                                l { \emph { Economics } };
-                                l { B };
-                            ];
-                        ])) (fun xs ys -> ([]));
+                                [
+                                    l { \emph { Pure Mathematics } };
+                                    l { A };
+                                ];
+                                [
+                                    l { \emph { Statics (AS) } };
+                                    l { A };
+                                ];
+                                [
+                                    l { \emph { Physics } };
+                                    l { A };
+                                ];
+                                [
+                                    l { \emph { Economics } };
+                                    l { B };
+                                ];
+                            ])) (fun xs ys -> ([]));
                 }
             >);
         ];
