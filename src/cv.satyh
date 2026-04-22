@@ -723,12 +723,63 @@ end = struct
                     match p#shortbooktitle with
                         | Some(shortbooktitle) -> { \book-title { #rawBooktitle; } (#shortbooktitle;), #year; }
                         | None -> { \book-title { #rawBooktitle; }, #year; } in
+                    let note =
+                        match p#note with
+                            | Some(note) -> note
+                            | None -> {} in
+                    (p#year, '<
+                        +p-noindent { #authors;. \`\`#title;'', #booktitle;, to appear. #note; }
+                    >)
+            | Proceedings(p) ->
+                let editors =
+                    match p#editor with
+                        | [] -> {}
+                        | editor :: [] -> { #editor;, ed. }
+                        | editor :: xs ->
+                            let editors = fold-authors { #editor; } xs in
+                                { #editors;, eds. } in
+                let rawTitle = p#title in
+                let year =
+                    (arabic p#year)
+                        |> embed-string in
+                let title =
+                    match p#shorttitle with
+                        | Some(shorttitle) -> { \book-title { #rawTitle; } (#shorttitle;) }
+                        | None -> { \book-title { #rawTitle; } } in
+                let series =
+                    match p#series with
+                        | Some(series) -> { , #series; }
+                        | None -> {} in
+                let volume =
+                    match p#volume with
+                        | Some(volume) ->
+                            let volume-string =
+                                arabic (volume)
+                                    |> embed-string in
+                                { , vol. #volume-string; }
+                        | None -> {} in
+                let number =
+                    match p#number with
+                        | Some(number) -> { , no. #number; }
+                        | None -> {} in
+                let publisher =
+                    match p#publisher with
+                        | Some(publisher) -> { , #publisher; }
+                        | None -> {} in
+                let organization =
+                    match p#organization with
+                        | Some(organization) -> { , #organization; }
+                        | None -> {} in
+                let address =
+                    match p#address with
+                        | Some(address) -> { , #address; }
+                        | None -> {} in
                 let note =
                     match p#note with
                         | Some(note) -> note
                         | None -> {} in
                     (p#year, '<
-                        +p-noindent { #authors;. \`\`#title;'', #booktitle;, to appear. #note; }
+                        +p-noindent { #editors; #title;#series;#volume;#number;#publisher;#organization;#address;, #year;. #note; }
                     >)
             | UnderReview(p) ->
                 let authors =

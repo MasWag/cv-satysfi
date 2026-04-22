@@ -24,6 +24,19 @@ type bib-to-appear = (|
     year: int;
     note: inline-text option;
 |)
+type bib-proceedings = (|
+    editor: inline-text list;
+    title: inline-text;
+    shorttitle: inline-text option;
+    series: inline-text option;
+    volume: int option;
+    number: inline-text option;
+    publisher: inline-text option;
+    organization: inline-text option;
+    address: inline-text option;
+    year: int;
+    note: inline-text option;
+|)
 type bib-article = (|
     author: inline-text list;
     title: inline-text;
@@ -43,4 +56,4 @@ type bib-to-misc = (|
     year: int;
     note: inline-text option;
 |)
-type bib-item = InProceedings of bib-in-proceedings | Article of bib-article | UnderReview of bib-under-review | ToAppear of bib-to-appear | Misc of bib-to-misc
+type bib-item = InProceedings of bib-in-proceedings | Article of bib-article | UnderReview of bib-under-review | ToAppear of bib-to-appear | Proceedings of bib-proceedings | Misc of bib-to-misc

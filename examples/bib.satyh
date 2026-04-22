@@ -61,6 +61,19 @@ let bibliography =
             year = 2019;
             note = None;
         |));
+        (Proceedings(|
+            editor = { |Isil Dillig, Serdar Tasiran| };
+            title = { Computer Aided Verification - 31st International Conference, CAV 2019, Proceedings, Part I };
+            shorttitle = Some({ CAV 2019 Proceedings });
+            series = Some({ Lecture Notes in Computer Science });
+            volume = Some(11561);
+            number = None;
+            publisher = Some({ Springer });
+            organization = None;
+            address = Some({ New York City, NY, USA });
+            year = 2019;
+            note = None;
+        |));
         (InProceedings(|
             author = { |Masaki Waga, Étienne André| };
             title = { Online Parametric Timed Pattern Matching with Automata-Based Skipping. };
