@@ -19,6 +19,7 @@ module PublicationList: sig
         name: string;
     |)
     direct +publications: [bib-item list] block-cmd
+    direct +publications-with-header: [inline-text; bib-item list] block-cmd
 end = struct
     let slateblue = Color.rgb 0.17 0.22 0.34
 
@@ -557,6 +558,24 @@ end = struct
             section-scheme
                 ctx
                 { Publications }
+                '<
+                    +tabbedblock ?:(indent) (List.reverse revPairlst);
+                >
+
+    let-block ctx +publications-with-header it publist =
+        let indent = 35pt in
+        let pairlstInt = List.map bib2block publist in
+        let removeDuplicatedYears (lst, latestYear) (year, it) =
+            if year <> latestYear
+            then
+                ((arabic year
+                    |> embed-string, it) :: lst, year)
+            else
+                (({}, it) :: lst, year) in
+        let (revPairlst, _) = List.fold-left removeDuplicatedYears ([], 0) pairlstInt in
+            section-scheme
+                ctx
+                it
                 '<
                     +tabbedblock ?:(indent) (List.reverse revPairlst);
                 >
