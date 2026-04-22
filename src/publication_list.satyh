@@ -19,7 +19,10 @@ module PublicationList: sig
         name: string;
     |)
     direct +publications: [bib-item list] block-cmd
-    direct +publications-with-header: [inline-text; bib-item list] block-cmd
+    direct +publications-with-header: [
+        inline-text;
+        bib-item list;
+    ] block-cmd
 end = struct
     let slateblue = Color.rgb 0.17 0.22 0.34
 
@@ -419,10 +422,10 @@ end = struct
                     match p#shortbooktitle with
                         | Some(shortbooktitle) -> { \book-title { #rawBooktitle; } (#shortbooktitle;), #year; }
                         | None -> { \book-title { #rawBooktitle; }, #year; } in
-                    let note =
-                        match p#note with
-                            | Some(note) -> note
-                            | None -> {} in
+                let note =
+                    match p#note with
+                        | Some(note) -> note
+                        | None -> {} in
                     (p#year, '<
                         +p-noindent { #authors;. \`\`#title;'', #booktitle;, to appear. #note; }
                     >)
@@ -433,7 +436,7 @@ end = struct
                         | editor :: [] -> { #editor;, ed. }
                         | editor :: xs ->
                             let editors = fold-authors { #editor; } xs in
-                                { #editors;, eds. } in
+                            { #editors;, eds. } in
                 let rawTitle = p#title in
                 let year =
                     (arabic p#year)
@@ -452,7 +455,7 @@ end = struct
                             let volume-string =
                                 arabic (volume)
                                     |> embed-string in
-                                { , vol. #volume-string; }
+                            { , vol. #volume-string; }
                         | None -> {} in
                 let number =
                     match p#number with
@@ -561,7 +564,6 @@ end = struct
                 '<
                     +tabbedblock ?:(indent) (List.reverse revPairlst);
                 >
-
     let-block ctx +publications-with-header it publist =
         let indent = 35pt in
         let pairlstInt = List.map bib2block publist in
