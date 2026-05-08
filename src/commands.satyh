@@ -136,7 +136,7 @@ end = struct
                             | editor :: [] -> { #editor;, ed. }
                             | editor :: xs ->
                                 let editors = fold-authors { #editor; } xs in
-                                    { #editors;, eds. } in
+                                { #editors;, eds. } in
                     let rawTitle = p#title in
                     let year =
                         (arabic p#year)
@@ -155,7 +155,7 @@ end = struct
                                 let volume-string =
                                     arabic (volume)
                                         |> embed-string in
-                                    { , vol. #volume-string; }
+                                { , vol. #volume-string; }
                             | None -> {} in
                     let number =
                         match p#number with
