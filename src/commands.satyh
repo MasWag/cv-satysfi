@@ -86,7 +86,7 @@ end = struct
                                         let volume-string =
                                             arabic (volume)
                                                 |> embed-string in
-                                        {, #series; #volume-string; }
+                                        { , #series; #volume-string; }
                                     | None -> {})
                             | None -> {} in
                     let pages =
@@ -94,7 +94,7 @@ end = struct
                             | Some((begin-page-string, end-page-string)) ->
                                 let begin-page = embed-string begin-page-string in
                                 let end-page = embed-string end-page-string in
-                                {, pp. #begin-page;-#end-page; }
+                                { , pp. #begin-page;-#end-page; }
                             | None -> {} in
                     let note =
                         match p#note with
@@ -147,7 +147,7 @@ end = struct
                             | None -> { \book-title { #rawTitle; } } in
                     let series =
                         match p#series with
-                            | Some(series) -> {, #series; }
+                            | Some(series) -> { , #series; }
                             | None -> {} in
                     let volume =
                         match p#volume with
@@ -155,23 +155,23 @@ end = struct
                                 let volume-string =
                                     arabic (volume)
                                         |> embed-string in
-                                {, vol. #volume-string; }
+                                { , vol. #volume-string; }
                             | None -> {} in
                     let number =
                         match p#number with
-                            | Some(number) -> {, no. #number; }
+                            | Some(number) -> { , no. #number; }
                             | None -> {} in
                     let publisher =
                         match p#publisher with
-                            | Some(publisher) -> {, #publisher; }
+                            | Some(publisher) -> { , #publisher; }
                             | None -> {} in
                     let organization =
                         match p#organization with
-                            | Some(organization) -> {, #organization; }
+                            | Some(organization) -> { , #organization; }
                             | None -> {} in
                     let address =
                         match p#address with
-                            | Some(address) -> {, #address; }
+                            | Some(address) -> { , #address; }
                             | None -> {} in
                     let note =
                         match p#note with
