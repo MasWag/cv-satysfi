@@ -167,7 +167,7 @@ end = struct
                     let publisher =
                         match p#publisher with
                             | Some(publisher) -> comma-prefixed { #publisher; }
-                            | None -> {} in
+                           | None -> {} in
                     let organization =
                         match p#organization with
                             | Some(organization) -> comma-prefixed { #organization; }
@@ -181,7 +181,7 @@ end = struct
                             | Some(note) -> note
                             | None -> {} in
                         '<
-                            +item-optional (itemfmt) { #editors; #title;#series;#volume;#number;#publisher;#organization;#address;, #year;. #note; } <
+                            +item-optional (itemfmt) { #editors; \`\`#title;''#series;#volume;#number;#publisher;#organization;#address;, #year;. #note; } <
                                 #inner;
                             >
                         >
