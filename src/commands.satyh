@@ -167,7 +167,7 @@ end = struct
                     let publisher =
                         match p#publisher with
                             | Some(publisher) -> comma-prefixed { #publisher; }
-                           | None -> {} in
+                            | None -> {} in
                     let organization =
                         match p#organization with
                             | Some(organization) -> comma-prefixed { #organization; }
