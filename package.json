@@ -5,7 +5,7 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-prettier": "^5.5.6",
-    "eslint-plugin-jest": "^29.15.5",
+    "eslint-plugin-jest": "^29.16.0",
     "gm": "^1.25.1",
     "jest": "^30.4.2",
     "jest-pdf-snapshot": "^0.5.4",
