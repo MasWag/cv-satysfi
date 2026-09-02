@@ -277,11 +277,11 @@ end = struct
                         | Some(_) -> sacc ^ s-num ^ `, `#)) ` ` in
         read-inline ctx (embed-string (`[` ^ sacc ^ `]`))
 
-    let paper-width = 182mm
-    let paper-height = 257mm
-    let top-margin = 20mm
-    let bottom-margin = 30mm
-    let side-margin = 25mm
+    let paper-width = 210mm
+    let paper-height = 297mm
+    let top-margin = 25.245mm
+    let bottom-margin = 25.245mm
+    let side-margin = 30.495mm
     let paper-size = UserDefinedPaper(paper-width, paper-height)
     let text-origin = (side-margin, top-margin)
     let text-width = paper-width -' (side-margin *' 2.0)
