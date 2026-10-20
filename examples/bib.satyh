@@ -4,13 +4,13 @@
 let bibliography =
     [
         (UnderReview(|
-            author = { |Masaki Waga, Étienne André, Ichiro Hasuo| };
+            author = { |Masaki Waga|Étienne André|Ichiro Hasuo| };
             title = { Model-Bounded Monitoring of Hybrid Systems. };
             year = 2020;
             note = None;
         |));
         (ToAppear(|
-            author = { |Elena Gutiérrez, Takamasa Okudono, Masaki Waga, Ichiro Hasuo| };
+            author = { |Elena Gutiérrez|Takamasa Okudono|Masaki Waga|Ichiro Hasuo| };
             title = { Genetic Algorithm for the Weight Maximization Problem on Weighted Automata. };
             shortbooktitle = Some({ GECCO });
             booktitle = { GECCO };
@@ -18,7 +18,7 @@ let bibliography =
             note = None;
         |));
         (ToAppear(|
-            author = { |Takamasa Okudono, Masaki Waga, Taro Sekiyama, Ichiro Hasuo| };
+            author = { |Takamasa Okudono|Masaki Waga|Taro Sekiyama|Ichiro Hasuo| };
             title = { Weighted Automata Extraction from Recurrent Neural Networks via Regression on State Spaces. };
             shortbooktitle = Some({ AAAI });
             booktitle = { AAAI };
@@ -50,7 +50,7 @@ let bibliography =
             note = None;
         |));
         (InProceedings(|
-            author = { |Masaki Waga, Étienne André, Ichiro Hasuo| };
+            author = { |Masaki Waga|Étienne André|Ichiro Hasuo| };
             title = { Symbolic Monitoring Against Specifications Parametric in Time and Data. };
             shortbooktitle = Some({ CAV (1) });
             booktitle = { CAV (1) };
@@ -62,7 +62,7 @@ let bibliography =
             note = None;
         |));
         (Proceedings(|
-            editor = { |Isil Dillig, Serdar Tasiran| };
+            editor = { |Isil Dillig|Serdar Tasiran| };
             title = { Computer Aided Verification - 31st International Conference, CAV 2019, Proceedings, Part I };
             shorttitle = Some({ CAV 2019 Proceedings });
             series = Some({ Lecture Notes in Computer Science });
@@ -75,7 +75,7 @@ let bibliography =
             note = None;
         |));
         (InProceedings(|
-            author = { |Masaki Waga, Étienne André| };
+            author = { |Masaki Waga|Étienne André| };
             title = { Online Parametric Timed Pattern Matching with Automata-Based Skipping. };
             shortbooktitle = Some({ NFM });
             booktitle = { NFM };
@@ -87,7 +87,7 @@ let bibliography =
             note = None;
         |));
         (Article(|
-            author = { |Masaki Waga, Ichiro Hasuo| };
+            author = { |Masaki Waga|Ichiro Hasuo| };
             title = { Moore-Machine Filtering for Timed and Untimed Pattern Matching. };
             shortjournal = Some({ IEEE Trans. on CAD of Integrated Circuits and Systems });
             journal = { IEEE Trans. on CAD of Integrated Circuits and Systems };
@@ -98,7 +98,7 @@ let bibliography =
             note = None;
         |));
         (InProceedings(|
-            author = { |Masaki Waga, Ichiro Hasuo, Kohei Suenaga| };
+            author = { |Masaki Waga|Ichiro Hasuo|Kohei Suenaga| };
             title = { MONAA: A Tool for Timed Pattern Matching with Automata-Based Acceleration. };
             shortbooktitle = Some({ MT\@CPSWeek });
             booktitle = { MT\@CPSWeek };
@@ -110,7 +110,7 @@ let bibliography =
             note = None;
         |));
         (InProceedings(|
-            author = { |Étienne André, Ichiro Hasuo, Masaki Waga| };
+            author = { |Étienne André|Ichiro Hasuo|Masaki Waga| };
             title = { Offline Timed Pattern Matching under Uncertainty. };
             shortbooktitle = Some({ ICECCS });
             booktitle = { ICECCS };
@@ -122,7 +122,7 @@ let bibliography =
             note = None;
         |));
         (InProceedings(|
-            author = { |Masaki Waga, Ichiro Hasuo, Kohei Suenaga| };
+            author = { |Masaki Waga|Ichiro Hasuo|Kohei Suenaga| };
             title = { Efficient Online Timed Pattern Matching by Automata-Based Skipping. };
             shortbooktitle = Some({ FORMATS });
             booktitle = { FORMATS };
@@ -134,7 +134,7 @@ let bibliography =
             note = None;
         |));
         (InProceedings(|
-            author = { |Masaki Waga, Takumi Akazaki, Ichiro Hasuo| };
+            author = { |Masaki Waga|Takumi Akazaki|Ichiro Hasuo| };
             title = { A Boyer-Moore Type Algorithm for Timed Pattern Matching. };
             shortbooktitle = Some({ FORMATS });
             booktitle = { FORMATS };
